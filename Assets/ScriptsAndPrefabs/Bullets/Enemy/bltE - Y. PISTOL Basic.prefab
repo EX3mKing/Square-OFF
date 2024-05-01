@@ -125,9 +125,10 @@ MonoBehaviour:
   bulletsInShell: 1
   energyCost: 0
   damage: 5
-  criticalDamage: 15
+  criticalDamage: 10
   speed: 70
-  inAccuracy: 0
+  inAccuracyX: 0
+  inAccuracyY: 0
   lifeTime: 5
   gravity: 0
   hitEffect: {fileID: 0}

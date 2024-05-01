@@ -99,7 +99,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 384
@@ -124,10 +124,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletsInShell: 1
   energyCost: 0
-  damage: 25
+  damage: 10
   criticalDamage: 15
   speed: 100
-  inAccuracy: 0
+  inAccuracyX: 0
+  inAccuracyY: 0
   lifeTime: 2
   gravity: 0
   hitEffect: {fileID: 0}

@@ -107,25 +107,33 @@ public class PlayerEnergy : Damageable
 
         (Weapon.Element, float) temp;
         
-        for (int sort = 0; sort < 2; sort++)
+        for (int i = 0; i < 2; i++)
         {
-            if (_energyTypesTemp[sort].Item2 > _energyTypesTemp[sort + 1].Item2)
+            for (int sort = 0; sort < 2 - i; sort++)
             {
-                temp = _energyTypesTemp[sort + 1];
-                _energyTypesTemp[sort + 1] = _energyTypesTemp[sort];
-                _energyTypesTemp[sort] = temp;
-            }       
-        }   
-
-        print(_energyTypesTemp[0].Item1.ToString() + _energyTypesTemp[1].Item1.ToString() +_energyTypesTemp[2].Item1.ToString());
-
-        if (_energyTypesTemp[0].Item1 == element) return;
-        if (_energyTypesTemp[1].Item1 == element)
-        {
-            temp = _energyTypesTemp[2];
-            _energyTypesTemp[2] = _energyTypesTemp[1];
-            _energyTypesTemp[1] = temp;
+                if (_energyTypesTemp[sort].Item2 <= _energyTypesTemp[sort + 1].Item2)
+                {
+                    temp = _energyTypesTemp[sort + 1];
+                    _energyTypesTemp[sort + 1] = _energyTypesTemp[sort];
+                    _energyTypesTemp[sort] = temp;
+                }
+            }
         }
-        print(_energyTypesTemp[0].Item1.ToString() + _energyTypesTemp[1].Item1.ToString() +_energyTypesTemp[2].Item1.ToString());
+        
+        for (int i = 0; i < 2; i++)
+        {
+            for (int sort = 0; sort < 2 - i; sort++)
+            {
+                if (_energyTypesTemp[sort + 1].Item1 == element)
+                {
+                    temp = _energyTypesTemp[sort + 1];
+                    _energyTypesTemp[sort + 1] = _energyTypesTemp[sort];
+                    _energyTypesTemp[sort] = temp;
+                }
+            }
+        }
+
+        print(_energyTypesTemp[0].Item1.ToString() + _energyTypesTemp[1].Item1.ToString() 
+                                                   + _energyTypesTemp[2].Item1.ToString());
     }
 }

@@ -52,6 +52,11 @@ public class Bullet : MonoBehaviour
     {
         Damageable damageable = other.gameObject.GetComponent<Damageable>();
         if (damageable) damageable.TakeDamage(element, damage);
+        else
+        {
+            damageable = other.gameObject.GetComponentInParent<Damageable>();
+            if (damageable) damageable.TakeDamage(element, damage);
+        }
         BulletDeath();
     }
     
