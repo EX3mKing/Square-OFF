@@ -17,4 +17,21 @@ public class W_Base : Weapon
             Invoke("SpawnBullets", k * timeBetweenBurstShots);
         }
     }
+
+    public override void Aiming()
+    {
+        if (isAimable)
+        {
+            if (isAiming) // move the weapon to the middle of the screen, zoom in
+            {
+                transform.localPosition = Vector3.Slerp(transform.localPosition, middlePosition.localPosition, Time.deltaTime * aimSpeed); 
+                mainCamera.fieldOfView = Mathf.Lerp(mainCamera.fieldOfView, zoomFOV, Time.deltaTime * aimSpeed);
+            }
+            else // move the weapon back to the start position, zoom out
+            {
+                transform.localPosition = Vector3.Slerp(transform.localPosition, startPosition, Time.deltaTime * aimSpeed); 
+                mainCamera.fieldOfView = Mathf.Lerp(mainCamera.fieldOfView, GameManager.instance.defaultFOV, Time.deltaTime * aimSpeed);
+            }
+        }
+    }
 }

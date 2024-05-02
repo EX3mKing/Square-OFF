@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7250187737185408298}
   - component: {fileID: 6027897622954685303}
   - component: {fileID: 7210235005394846247}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Dropp CYAN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,5 +121,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cyan: 50
-  magenta: 0
   yellow: 0
+  magenta: 0

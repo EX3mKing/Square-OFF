@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerWeapon : MonoBehaviour
 {
     public List<Weapon> weapons;
-    private Weapon weapon;
+    public Weapon weapon;
 
     private void Start()
     {

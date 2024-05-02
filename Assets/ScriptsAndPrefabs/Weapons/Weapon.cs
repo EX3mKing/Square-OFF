@@ -46,11 +46,11 @@ public class Weapon : MonoBehaviour
     private bool _isShootDown;          // is the shoot button held down
 
     // variables for aiming
-    private Camera _mainCamera;
-    private Vector3 _startPosition;     // used for aiming down sights
+    protected Camera mainCamera;
+    protected Vector3 startPosition;     // used for aiming down sights
     public Transform middlePosition;    // position in the middle of the camera
     public bool isAiming;               // is the player aiming down sights
-    private float _zoomFOV;             // the field of view when aiming down sights
+    protected float zoomFOV;             // the field of view when aiming down sights
 
 
     public enum Type
@@ -74,14 +74,19 @@ public class Weapon : MonoBehaviour
 
     public virtual void Start()
     { 
-        // calculate the time between shots
+        Invoke("WaitForManager", 0.02f);
         shootCooldown = 1 / fireRate;
-        _startPosition = transform.localPosition;
-        _mainCamera = Camera.main;
-        _zoomFOV = GameManager.instance.defaultFOV / zoom;
+        startPosition = transform.localPosition;
+        mainCamera = Camera.main;
         bulletScript = bullet.GetComponent<Bullet>();
-        
     }
+    
+    private void WaitForManager()
+    {
+        // calculate the time between shots
+        zoomFOV = GameManager.instance.defaultFOV / zoom;
+    }
+    
 
     public virtual void Update()
     {
@@ -97,14 +102,14 @@ public class Weapon : MonoBehaviour
         // rotate the bulletSpawnPoint to look at the hit point so the bullet fires straight to target
         // in late update to make sure the bulletSpawnPoint is in the right position
         RaycastHit hit;
-        if (Physics.Raycast(_mainCamera.transform.position, 
-                _mainCamera.transform.forward, out hit, 1000, aimMask))
+        if (Physics.Raycast(mainCamera.transform.position, 
+                mainCamera.transform.forward, out hit, 1000, aimMask))
         {
             bulletSpawnPoint.LookAt(hit.point);
         }
         else
         {
-            bulletSpawnPoint.LookAt(_mainCamera.transform.forward * 1000);
+            bulletSpawnPoint.LookAt(mainCamera.transform.forward * 1000);
         }
         ApplyInaccuracy();
     }
@@ -166,19 +171,6 @@ public class Weapon : MonoBehaviour
     // NEEDS TO BE CALLED IN UPDATE TO WORK
     public virtual void Aiming() // moves the weapon and zooms the camera
     {
-        if (isAimable)
-        {
-            if (isAiming) // move the weapon to the middle of the screen, zoom in
-            {
-                transform.localPosition = Vector3.Slerp(transform.localPosition, middlePosition.localPosition, Time.deltaTime * aimSpeed); 
-                _mainCamera.fieldOfView = Mathf.Lerp(_mainCamera.fieldOfView, _zoomFOV, Time.deltaTime * aimSpeed);
-            }
-            else // move the weapon back to the start position, zoom out
-            {
-                transform.localPosition = Vector3.Slerp(transform.localPosition, _startPosition, Time.deltaTime * aimSpeed); 
-                _mainCamera.fieldOfView = Mathf.Lerp(_mainCamera.fieldOfView, GameManager.instance.defaultFOV, Time.deltaTime * aimSpeed);
-            }
-        }
     }
     
     public virtual void ApplyInaccuracy()
@@ -187,5 +179,4 @@ public class Weapon : MonoBehaviour
         Vector2 random = UnityEngine.Random.insideUnitCircle;
         bulletSpawnPoint.rotation = Quaternion.Euler(new Vector3(random.x, random.y, 0 ) * inAccuracy + bulletSpawnPoint.rotation.eulerAngles);
     }
-
 }

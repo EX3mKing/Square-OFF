@@ -19,7 +19,7 @@ public class PlayerEnergy : Damageable
     public UI_EnergyBar yellowSlider;
     public UI_EnergyBar magentaSlider;
     
-    public Dictionary<Weapon.Element, float> _energyTypesMax = new Dictionary<Weapon.Element, float>();
+    private Dictionary<Weapon.Element, float> _energyTypesMax = new Dictionary<Weapon.Element, float>();
     private Dictionary<Weapon.Element, float> _energyTypesCur = new Dictionary<Weapon.Element, float>();
     private (Weapon.Element, float)[] _energyTypesTemp;
 
@@ -132,8 +132,5 @@ public class PlayerEnergy : Damageable
                 }
             }
         }
-
-        print(_energyTypesTemp[0].Item1.ToString() + _energyTypesTemp[1].Item1.ToString() 
-                                                   + _energyTypesTemp[2].Item1.ToString());
     }
 }
