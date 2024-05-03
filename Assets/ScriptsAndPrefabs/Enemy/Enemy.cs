@@ -74,7 +74,7 @@ public class Enemy : Damageable
         
     }
     
-    public override float TakeDamage(Weapon.Element element, float damage)
+    public override float TakeDamage(Element element, float damage)
     {
         damage = base.TakeDamage(element, damage);
         

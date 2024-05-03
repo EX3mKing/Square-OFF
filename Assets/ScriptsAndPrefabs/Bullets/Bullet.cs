@@ -21,8 +21,8 @@ public class Bullet : MonoBehaviour
 
     public GameObject hitEffect;
     public AudioClip hitSound;
-    public Weapon.Type type;
-    public Weapon.Element element;
+    public WeaponType type;
+    public Element element;
     public Owner owner;
     
     private Rigidbody _rb;

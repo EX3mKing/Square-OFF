@@ -19,59 +19,59 @@ public class PlayerEnergy : Damageable
     public UI_EnergyBar yellowSlider;
     public UI_EnergyBar magentaSlider;
     
-    private Dictionary<Weapon.Element, float> _energyTypesMax = new Dictionary<Weapon.Element, float>();
-    private Dictionary<Weapon.Element, float> _energyTypesCur = new Dictionary<Weapon.Element, float>();
-    private (Weapon.Element, float)[] _energyTypesTemp;
+    private Dictionary<Element, float> _energyTypesMax = new Dictionary<Element, float>();
+    private Dictionary<Element, float> _energyTypesCur = new Dictionary<Element, float>();
+    private (Element, float)[] _energyTypesTemp;
 
     private void Start()
     {
-        _energyTypesCur = new Dictionary<Weapon.Element, float>()
+        _energyTypesCur = new Dictionary<Element, float>()
         {
-            {Weapon.Element.Cyan, maxCyanEnergy},
-            {Weapon.Element.Yellow, maxYellowEnergy},
-            {Weapon.Element.Magenta, maxMagentaEnergy}
+            {Element.Cyan, maxCyanEnergy},
+            {Element.Yellow, maxYellowEnergy},
+            {Element.Magenta, maxMagentaEnergy}
         };
-        _energyTypesMax = new Dictionary<Weapon.Element, float>()
+        _energyTypesMax = new Dictionary<Element, float>()
         {
-            {Weapon.Element.Cyan, maxCyanEnergy},
-            {Weapon.Element.Yellow, maxYellowEnergy},
-            {Weapon.Element.Magenta, maxMagentaEnergy}
+            {Element.Cyan, maxCyanEnergy},
+            {Element.Yellow, maxYellowEnergy},
+            {Element.Magenta, maxMagentaEnergy}
         };
     }
 
     private void Update()
     {
-        _energyTypesCur[Weapon.Element.Cyan] -= depletionRateCyan * Time.deltaTime;
-        _energyTypesCur[Weapon.Element.Yellow] -= depletionRateYellow * Time.deltaTime;
-        _energyTypesCur[Weapon.Element.Magenta] -= depletionRateMagenta * Time.deltaTime;
+        _energyTypesCur[Element.Cyan] -= depletionRateCyan * Time.deltaTime;
+        _energyTypesCur[Element.Yellow] -= depletionRateYellow * Time.deltaTime;
+        _energyTypesCur[Element.Magenta] -= depletionRateMagenta * Time.deltaTime;
         
-        _energyTypesCur[Weapon.Element.Cyan] = Mathf.Clamp(_energyTypesCur[Weapon.Element.Cyan], 0, maxCyanEnergy);
-        _energyTypesCur[Weapon.Element.Yellow] = Mathf.Clamp(_energyTypesCur[Weapon.Element.Yellow], 0, maxYellowEnergy);
-        _energyTypesCur[Weapon.Element.Magenta] = Mathf.Clamp(_energyTypesCur[Weapon.Element.Magenta], 0, maxMagentaEnergy);
+        _energyTypesCur[Element.Cyan] = Mathf.Clamp(_energyTypesCur[Element.Cyan], 0, maxCyanEnergy);
+        _energyTypesCur[Element.Yellow] = Mathf.Clamp(_energyTypesCur[Element.Yellow], 0, maxYellowEnergy);
+        _energyTypesCur[Element.Magenta] = Mathf.Clamp(_energyTypesCur[Element.Magenta], 0, maxMagentaEnergy);
 
-        cyanSlider.value = _energyTypesCur[Weapon.Element.Cyan] / maxCyanEnergy;
-        yellowSlider.value = _energyTypesCur[Weapon.Element.Yellow] / maxYellowEnergy;
-        magentaSlider.value = _energyTypesCur[Weapon.Element.Magenta] / maxMagentaEnergy;
+        cyanSlider.value = _energyTypesCur[Element.Cyan] / maxCyanEnergy;
+        yellowSlider.value = _energyTypesCur[Element.Yellow] / maxYellowEnergy;
+        magentaSlider.value = _energyTypesCur[Element.Magenta] / maxMagentaEnergy;
         
-        if (_energyTypesCur[Weapon.Element.Cyan] == 0 && _energyTypesCur[Weapon.Element.Yellow] == 0 && _energyTypesCur[Weapon.Element.Magenta] == 0)
+        if (_energyTypesCur[Element.Cyan] == 0 && _energyTypesCur[Element.Yellow] == 0 && _energyTypesCur[Element.Magenta] == 0)
         {
             print("Game Over");
         }
     }
 
-    public float UseEnergy(Weapon.Element element, float amount)
+    public float UseEnergy(Element element, float amount)
     {
         float leftOver = _energyTypesCur[element] - amount;
         _energyTypesCur[element] = leftOver >= 0 ? leftOver : _energyTypesCur[element];
         return leftOver;
     }
 
-    public void RestoreEnergy(Weapon.Element element, float amount)
+    public void RestoreEnergy(Element element, float amount)
     {
         _energyTypesCur[element] = Mathf.Clamp(_energyTypesCur[element] + amount,0, _energyTypesMax[element]);
     }
 
-    public override float TakeDamage(Weapon.Element element, float damage)
+    public override float TakeDamage(Element element, float damage)
     {
         // applies the weaknesses to the damage
         damage = base.TakeDamage(element, damage);
@@ -98,14 +98,14 @@ public class PlayerEnergy : Damageable
     }
     
     // bubble sort, and sets the selected element to the top
-    private void SortEnergy(Weapon.Element element)
+    private void SortEnergy(Element element)
     {
         _energyTypesTemp = new []{ 
-            (Weapon.Element.Cyan, _energyTypesCur[Weapon.Element.Cyan]), 
-            (Weapon.Element.Yellow, _energyTypesCur[Weapon.Element.Yellow]), 
-            (Weapon.Element.Magenta, _energyTypesCur[Weapon.Element.Magenta])};
+            (Element.Cyan, _energyTypesCur[Element.Cyan]), 
+            (Element.Yellow, _energyTypesCur[Element.Yellow]), 
+            (Element.Magenta, _energyTypesCur[Element.Magenta])};
 
-        (Weapon.Element, float) temp;
+        (Element, float) temp;
         
         for (int i = 0; i < 2; i++)
         {

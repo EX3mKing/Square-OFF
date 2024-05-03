@@ -1,57 +1,81 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Room : MonoBehaviour
+public class Room : ScriptableObject
 {
-    public Type type;
-    public Type up;
-    public Type down;
-    public Type right;
-    public Type left;
-    [Tooltip("X coordinate of the room in the maze grid.")]
     public int x;
-    [Tooltip("Y coordinate of the room in the maze grid.")]
     public int y;
+    public RoomType type;
+    public int spawnDistanceMin = 1;
+    public int spawnDistanceMax;
+    public List<(int,int)> availableSpaces = new List<(int, int)>();
+
+    public Dictionary<(int, int), RoomType> maze;
+    public int sectionIndex;
+    public int spawnRoomIndex;
     
-    public enum Type
+    public virtual RoomGenerationType Generation { get; private set; }
+
+    public virtual Dictionary<(int, int), RoomType> Generate(Dictionary<(int,int), RoomType> mazeReference,  int index)
     {
-        Normal,
-        Empty,
-        Spawn,
-        Rest,
-        Shop,
-        Treasure,
-        Hall,
-        Boss,
-        BossHall,
-        Null
+        ClearLogic();
+        AssignMazeInfo(mazeReference, index);
+        FindSpawnableSpaces();
+        PickSpawnSpace();
+        GenerationLogic();
+
+        return maze;
     }
     
-    public void AssignNeighbours(Type up, Type down, Type right, Type left)
+    public virtual void FindSpawnableSpaces()
     {
-        if (up != Type.Null) this.up = up;
-        if (down != Type.Null) this.down = down;
-        if (right != Type.Null) this.right = right;
-        if (left != Type.Null) this.left = left;
+        foreach (var room in maze)
+        {
+            for (int i = spawnDistanceMin; i < spawnDistanceMax + 1; i++)
+            {
+                for (int j = spawnDistanceMin; j < spawnDistanceMax - i + 1 ; j++)
+                {
+                    CheckAndAdd((j, i), room.Key);
+                    CheckAndAdd((-j, i), room.Key);
+                    CheckAndAdd((j, -i), room.Key);
+                    CheckAndAdd((-j, -i), room.Key);
+                }
+                
+                CheckAndAdd((0,i), room.Key);
+                CheckAndAdd((0,-i), room.Key);
+                CheckAndAdd((i,0), room.Key);
+                CheckAndAdd((-i,0), room.Key);
+            }
+        }
     }
     
-    public int NeighbourTypeNumber (Type t)
+    public virtual void CheckAndAdd((int, int) coordinates, (int, int) room)
     {
-        int number = 0;
-        if (up == t) number++;
-        if (down == t) number++;
-        if (right == t) number++;
-        if (left == t) number++;
-        return number;
+        (int, int) globalCoordinates = Coordinates.Add(coordinates, room);
+        if (!maze.ContainsKey(globalCoordinates))
+        {
+            availableSpaces.Add(globalCoordinates);
+        }
     }
     
-    public void Copy(Room room)
+    public virtual void AssignMazeInfo(Dictionary<(int,int), RoomType> mazeReference, int index)
     {
-        type = room.type;
-        up = room.up;
-        down = room.down;
-        right = room.right;
-        left = room.left;
-        x = room.x;
-        y = room.y;
+        sectionIndex = index;
+        maze = mazeReference;
+    }
+
+    public virtual void PickSpawnSpace()
+    {
+        
+    }
+    
+    public virtual void GenerationLogic()
+    {
+        
+    }
+
+    public virtual void ClearLogic()
+    {
+        availableSpaces.Clear();
     }
 }

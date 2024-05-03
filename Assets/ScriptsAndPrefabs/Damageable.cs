@@ -8,17 +8,17 @@ public class Damageable : MonoBehaviour
     public float magentaWeakness = 1;
     public float yellowWeakness = 1;
     
-    public virtual float TakeDamage(Weapon.Element element, float damage)
+    public virtual float TakeDamage(Element element, float damage)
     {
         switch (element)
         {
-            case Weapon.Element.Cyan:
+            case Element.Cyan:
                 damage *= cyanWeakness;
                 break;
-            case Weapon.Element.Magenta:
+            case Element.Magenta:
                 damage *= magentaWeakness;
                 break;
-            case Weapon.Element.Yellow:
+            case Element.Yellow:
                 damage *= yellowWeakness;
                 break;
         }

@@ -51,26 +51,7 @@ public class Weapon : MonoBehaviour
     public Transform middlePosition;    // position in the middle of the camera
     public bool isAiming;               // is the player aiming down sights
     protected float zoomFOV;             // the field of view when aiming down sights
-
-
-    public enum Type
-    {
-        Pistol,
-        Rifle,
-        Shotgun,
-        Sniper,
-        Rocket,
-        Melee,
-        Special,
-        None,
-    }
-    public enum Element
-    {
-        Cyan,
-        Yellow,
-        Magenta,
-        Black, // can be used in any weapon slot, generally used for special weapons or melee weapons
-    }
+    
 
     public virtual void Start()
     { 

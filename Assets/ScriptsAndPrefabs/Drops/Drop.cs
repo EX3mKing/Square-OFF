@@ -13,9 +13,9 @@ public class Drop : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             PlayerEnergy playerEnergy = GameManager.instance.playerEnergy;
-            playerEnergy.RestoreEnergy(Weapon.Element.Cyan, cyan);
-            playerEnergy.RestoreEnergy(Weapon.Element.Yellow, yellow);
-            playerEnergy.RestoreEnergy(Weapon.Element.Magenta, magenta);
+            playerEnergy.RestoreEnergy(Element.Cyan, cyan);
+            playerEnergy.RestoreEnergy(Element.Yellow, yellow);
+            playerEnergy.RestoreEnergy(Element.Magenta, magenta);
             Destroy(gameObject);
         }
     }
