@@ -12,10 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bd3f8396048fb14cb6f44423d1ec280, type: 3}
   m_Name: R_Single
   m_EditorClassIdentifier: 
-  x: 0
-  y: 0
-  type: 0
+  type: 6
   spawnDistanceMin: 1
   spawnDistanceMax: 2
-  sectionIndex: 2
-  spawnRoomIndex: 21
+  spawnRoomIndex: 47

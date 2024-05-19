@@ -122,6 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b9bc94e6da5b574b896568250d36979, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletInfo: {fileID: 11400000, guid: c9e696d292f39064ba8a3e8ff7b7be33, type: 2}
   bulletsInShell: 1
   energyCost: 15
   damage: 50

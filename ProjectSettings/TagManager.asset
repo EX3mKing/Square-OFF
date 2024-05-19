@@ -5,7 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
-  - Critical
+  - EnemyCritical
+  - PlayerCritical
   layers:
   - Default
   - TransparentFX
@@ -18,6 +19,7 @@ TagManager:
   - Enemy
   - Obstacle
   - Drop
+  - Comet
   - 
   - 
   - 
@@ -26,8 +28,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Effects
   - 
   - 
   - 

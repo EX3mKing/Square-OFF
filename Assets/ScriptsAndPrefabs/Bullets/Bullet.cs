@@ -5,8 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Bullet : MonoBehaviour
 {
+    public BulletInfo bulletInfo;
+    
     // accuracy is averaged between bullet's and weapon's accuracy
-
     public int bulletsInShell;  // number of bullets in one shell
     public float energyCost;
     public float damage;
@@ -36,6 +37,7 @@ public class Bullet : MonoBehaviour
 
     public virtual void Awake()
     {
+        SetInfo();
         _rb = GetComponent<Rigidbody>();
         
         // add inaccuracy to the individual pellets per bullet
@@ -51,12 +53,24 @@ public class Bullet : MonoBehaviour
     public virtual void OnCollisionEnter(Collision other)
     {
         Damageable damageable = other.gameObject.GetComponent<Damageable>();
-        if (damageable) damageable.TakeDamage(element, damage);
-        else
+        if (damageable == null) damageable = other.gameObject.GetComponentInParent<Damageable>();
+        
+        if (damageable == null)
         {
-            damageable = other.gameObject.GetComponentInParent<Damageable>();
-            if (damageable) damageable.TakeDamage(element, damage);
+            BulletDeath();
+            return;
         }
+
+        if (damageable.gameObject.CompareTag(owner.ToString()) ||
+            damageable.gameObject.CompareTag(owner.ToString() + "Critical"))
+        {
+            BulletDeath();
+            return;
+        }
+        
+        if (other.gameObject.tag.Contains("Critical")) damageable.TakeDamage(element, criticalDamage);
+        else damageable.TakeDamage(element, damage);
+        
         BulletDeath();
     }
     
@@ -68,5 +82,19 @@ public class Bullet : MonoBehaviour
     public virtual void FixedUpdate()
     {
         _rb.velocity += Vector3.up * (-gravity * Time.fixedDeltaTime); // apply gravity to the bullet
+    }
+
+    public virtual void SetInfo()
+    {
+        if (bulletInfo == null) return;
+        bulletsInShell = bulletInfo.bulletsInShell;  
+        energyCost = bulletInfo.energyCost;
+        damage = bulletInfo.damage;
+        criticalDamage = bulletInfo.criticalDamage;
+        speed = bulletInfo.speed;
+        inAccuracyX = bulletInfo.inAccuracyX;
+        inAccuracyY = bulletInfo.inAccuracyY;
+        lifeTime = bulletInfo.lifeTime;
+        gravity = bulletInfo.gravity;
     }
 }

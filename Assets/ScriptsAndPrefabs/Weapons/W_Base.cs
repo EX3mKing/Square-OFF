@@ -34,4 +34,10 @@ public class W_Base : Weapon
             }
         }
     }
+
+    public override void SpawnBullets()
+    {
+        base.SpawnBullets();
+        AudioManager.instance.PlaySFX(shootSound);
+    }
 }

@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class PlayerEnergy : Damageable
@@ -18,7 +20,11 @@ public class PlayerEnergy : Damageable
     public UI_EnergyBar cyanSlider;
     public UI_EnergyBar yellowSlider;
     public UI_EnergyBar magentaSlider;
-    
+
+    public Volume cyanVolume;
+    public Volume yellowVolume;
+    public Volume magentaVolume;
+
     private Dictionary<Element, float> _energyTypesMax = new Dictionary<Element, float>();
     private Dictionary<Element, float> _energyTypesCur = new Dictionary<Element, float>();
     private (Element, float)[] _energyTypesTemp;
@@ -53,10 +59,16 @@ public class PlayerEnergy : Damageable
         yellowSlider.value = _energyTypesCur[Element.Yellow] / maxYellowEnergy;
         magentaSlider.value = _energyTypesCur[Element.Magenta] / maxMagentaEnergy;
         
+        cyanVolume.weight = 1 - _energyTypesCur[Element.Cyan] / maxCyanEnergy;
+        yellowVolume.weight = 1 - _energyTypesCur[Element.Yellow] / maxYellowEnergy;
+        magentaVolume.weight = 1 - _energyTypesCur[Element.Magenta] / maxMagentaEnergy;
+        
         if (_energyTypesCur[Element.Cyan] == 0 && _energyTypesCur[Element.Yellow] == 0 && _energyTypesCur[Element.Magenta] == 0)
         {
             print("Game Over");
+            GameManager.instance.GameOver();
         }
+        
     }
 
     public float UseEnergy(Element element, float amount)

@@ -12,11 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32d99e5d5a29f3249a7e99affaeb98f9, type: 3}
   m_Name: R_Clump
   m_EditorClassIdentifier: 
-  x: 0
-  y: 0
-  type: 6
+  type: 0
   spawnDistanceMin: 1
   spawnDistanceMax: 2
-  sectionIndex: 1
-  spawnRoomIndex: 16
-  size: 8
+  spawnRoomIndex: 56
+  size: 3

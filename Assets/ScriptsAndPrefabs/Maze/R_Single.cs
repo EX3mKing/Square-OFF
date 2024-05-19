@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "R_Single", menuName = "Maze/Room/Single", order = 0)]
+[CreateAssetMenu(fileName = "R_Single", menuName = "Maze/Rooms/Single", order = 0)]
 public class R_Single : Room
 {
     public override RoomGenerationType Generation => RoomGenerationType.Single;
-    
+    public override int roomSize => 1;
 
-    public override Dictionary<(int,int), RoomType> Generate(Dictionary<(int,int), RoomType> mazeReference, int index)
+    public override Dictionary<(int,int), RoomType> Generate(Dictionary<(int,int), RoomType> mazeReference)
     {
-        base.Generate(mazeReference, index);
-        return maze;
+        base.Generate(mazeReference);
+        return roomsToGenerate;
     }
     public override void PickSpawnSpace()
     {
@@ -20,6 +20,6 @@ public class R_Single : Room
     
     public override void GenerationLogic()
     {
-        maze.Add(availableSpaces[spawnRoomIndex], RoomType.Normal);
+        roomsToGenerate.Add(availableSpaces[spawnRoomIndex], type);
     }
 }

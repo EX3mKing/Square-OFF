@@ -120,6 +120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b2e5fa9b30a28f49af7ca13265b9347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cyan: 50
+  cyan: 125
   yellow: 0
   magenta: 0

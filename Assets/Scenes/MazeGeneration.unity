@@ -156,10 +156,7 @@ MonoBehaviour:
     type: 3}
   spawnPrefab: {fileID: 6185835922026665945, guid: 60d58f74412942b48b7ec7e894deea66,
     type: 3}
-  roomsToGenerate:
-  - {fileID: 11400000, guid: cc604676786a9b246b67e82132ad3f2c, type: 2}
-  - {fileID: 11400000, guid: cc604676786a9b246b67e82132ad3f2c, type: 2}
-  - {fileID: 11400000, guid: cc604676786a9b246b67e82132ad3f2c, type: 2}
+  sectionsToGenerate: []
 --- !u!4 &217553650
 Transform:
   m_ObjectHideFlags: 0

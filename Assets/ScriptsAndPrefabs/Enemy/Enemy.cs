@@ -8,6 +8,8 @@ public class Enemy : Damageable
 {
     public float health = 100;
     public GameObject drop;
+    [Header("if not tragets the base")]
+    public bool targetPlayer;
 
     public W_Enemy weapon;
     public LayerMask shootAtLayer;
@@ -18,7 +20,7 @@ public class Enemy : Damageable
     public float timeToLoseAggro = 0.2f;
     
     private NavMeshAgent _agent;
-    private Transform _player;
+    public Transform target;
     
     private float _currentTimeToFollow;
     private float _currentTimeToAttack;
@@ -27,7 +29,8 @@ public class Enemy : Damageable
     public virtual void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
-        _player = GameManager.instance.player.transform;
+        if (targetPlayer) target = GameManager.instance.player.transform;
+        else target = GameManager.instance.generator.transform;
         _currentTimeToAttack = timeToAttack;
         _currentTimeToFollow = timeToFollow;
     }
@@ -36,7 +39,7 @@ public class Enemy : Damageable
     {
         weapon.isAiming = false;
         RaycastHit raycast;
-        Physics.Raycast(transform.position, _player.position - transform.position, out raycast, 
+        Physics.Raycast(transform.position, target.position - transform.position, out raycast, 
             distanceToFollow, shootAtLayer);
 
         if (raycast.collider == null || !raycast.collider.CompareTag("Player"))
@@ -55,7 +58,7 @@ public class Enemy : Damageable
 
         _currentTimeToFollow -= Time.deltaTime;
 
-        float distance = Vector3.Distance(transform.position, _player.position);
+        float distance = Vector3.Distance(transform.position, target.position);
         if (distance < distanceToAttack)
         {
             _currentTimeToAttack -= Time.deltaTime;
@@ -68,23 +71,23 @@ public class Enemy : Damageable
         }
         else
         {
-            if (_currentTimeToFollow <= 0) _agent.SetDestination(_player.position);
+            if (_currentTimeToFollow <= 0) _agent.SetDestination(target.position);
             else _agent.SetDestination(transform.position);
         }
         
     }
-    
+
     public override float TakeDamage(Element element, float damage)
     {
         damage = base.TakeDamage(element, damage);
-        
+
         health -= damage;
         if (health <= 0)
         {
             Destroy(gameObject);
             Instantiate(drop, transform.position, Quaternion.identity);
         }
-        
+
         return damage;
     }
 }

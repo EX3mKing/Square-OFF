@@ -53,6 +53,18 @@ public enum Element
     Black, // can be used in any weapon slot, generally used for special weapons or melee weapons
 }
 
+public enum CometElement
+{
+    Red,
+    Green,
+    Blue
+    // Cyan,
+    // Yellow,
+    // Magenta,
+    // Black,
+    // White,
+}
+
 public static class Coordinates
 {
     public static (int, int) Add((int, int) coords1, (int, int) coords2)

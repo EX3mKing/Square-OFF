@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "R_Clump", menuName = "Maze/Room/Clump", order = 2)]
+[CreateAssetMenu(fileName = "R_Clump", menuName = "Maze/Rooms/Clump", order = 1)]
 public class R_Clump : Room
 {
-    public int size;
     public override RoomGenerationType Generation => RoomGenerationType.Clump;
     private List<(int, int)> _clump = new List<(int, int)>();
 
-    public override Dictionary<(int,int), RoomType> Generate(Dictionary<(int,int), RoomType> mazeReference,  int index)
+    public override Dictionary<(int,int), RoomType> Generate(Dictionary<(int,int), RoomType> mazeReference)
     {
-        base.Generate(mazeReference,  index);
-        return maze;
+        base.Generate(mazeReference);
+        return roomsToGenerate;
     }
     public override void PickSpawnSpace()
     {
@@ -26,7 +25,7 @@ public class R_Clump : Room
         
         int looped = 0;
         
-        while (_clump.Count < size  && looped < 10)
+        while (_clump.Count < roomSize  && looped < 10)
         {
             List<(int, int)> cords = AdjacentPossibleSpaces(currentSpace);
             if (cords.Count > 0)
@@ -42,7 +41,7 @@ public class R_Clump : Room
         
         foreach (var clumpSpace in _clump)
         {
-            maze.Add(clumpSpace, type);
+            roomsToGenerate.Add(clumpSpace, type);
         }
     }
 

@@ -3,32 +3,34 @@ using UnityEngine;
 
 public class Room : ScriptableObject
 {
-    public int x;
-    public int y;
     public RoomType type;
+    public virtual int roomSize { get; set; }
     public int spawnDistanceMin = 1;
-    public int spawnDistanceMax;
-    public List<(int,int)> availableSpaces = new List<(int, int)>();
-
-    public Dictionary<(int, int), RoomType> maze;
-    public int sectionIndex;
+    public int spawnDistanceMax = 2;
     public int spawnRoomIndex;
+    public List<(int,int)> availableSpaces = new List<(int, int)>();
+    public (int, int) closestSpace;
+    public List<(int,int)> hallSpaces = new List<(int, int)>();
+    public Dictionary<(int, int), RoomType> maze;
+    public Dictionary<(int, int), RoomType> roomsToGenerate = new Dictionary<(int, int), RoomType>();
     
     public virtual RoomGenerationType Generation { get; private set; }
 
-    public virtual Dictionary<(int, int), RoomType> Generate(Dictionary<(int,int), RoomType> mazeReference,  int index)
+    public virtual Dictionary<(int, int), RoomType> Generate(Dictionary<(int,int), RoomType> mazeReference)
     {
         ClearLogic();
-        AssignMazeInfo(mazeReference, index);
+        AssignMazeInfo(mazeReference);
         FindSpawnableSpaces();
         PickSpawnSpace();
+        FindClosestSpace();
         GenerationLogic();
 
-        return maze;
+        return roomsToGenerate;
     }
     
     public virtual void FindSpawnableSpaces()
     {
+        ClearLogic();
         foreach (var room in maze)
         {
             for (int i = spawnDistanceMin; i < spawnDistanceMax + 1; i++)
@@ -48,6 +50,35 @@ public class Room : ScriptableObject
             }
         }
     }
+
+    public virtual void FindClosestSpace()
+    {
+        ClearLogic();
+        (int, int)room = availableSpaces[spawnRoomIndex];
+        for (int i = spawnDistanceMin; i < spawnDistanceMax + 1; i++)
+        {
+            if (Check((0, i), room))
+            { closestSpace = (0, i); return; }
+            if (Check((0, -i), room))
+            { closestSpace = (0, -i); return; }
+            if (Check((i, 0), room))
+            { closestSpace = (i, 0); return; }
+            if (Check((-i, 0), room))
+            { closestSpace = (-i, 0); return; }
+            
+            for (int j = spawnDistanceMin; j < spawnDistanceMax - i + 1 ; j++)
+            {
+                if (Check((j, i), room))
+                { closestSpace = (j, i); return; }
+                if (Check((-j, i), room))
+                { closestSpace = (-j, i); return; }
+                if (Check((j, -i), room))
+                { closestSpace = (j, -i); return; }
+                if (Check((-j, -i), room))
+                { closestSpace = (-j, -i); return; }
+            }
+        }
+    }
     
     public virtual void CheckAndAdd((int, int) coordinates, (int, int) room)
     {
@@ -58,9 +89,13 @@ public class Room : ScriptableObject
         }
     }
     
-    public virtual void AssignMazeInfo(Dictionary<(int,int), RoomType> mazeReference, int index)
+    public virtual bool Check((int, int) coordinates, (int, int) room)
     {
-        sectionIndex = index;
+        return maze.ContainsKey(Coordinates.Add(coordinates, room));
+    }
+    
+    public virtual void AssignMazeInfo(Dictionary<(int,int), RoomType> mazeReference)
+    {
         maze = mazeReference;
     }
 
@@ -77,5 +112,6 @@ public class Room : ScriptableObject
     public virtual void ClearLogic()
     {
         availableSpaces.Clear();
+        roomsToGenerate.Clear();
     }
 }

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class W_Enemy : Weapon
 {
     [Header("ENEMY WEAPON SETTINGS")]
@@ -10,13 +9,15 @@ public class W_Enemy : Weapon
     [Tooltip("returns the weapon to starting rotation when not aiming at player")]
     public bool returnWeapon;
     
-    private Transform _player;
+    private Transform _target;
+    private AudioSource _audioSource;
 
     public override void Start()
     {
         base.Start();
         isAutomatic = true;
-        _player = GameManager.instance.player.transform;
+        _target = GetComponentInParent<Enemy>().target;
+        _audioSource = GetComponent<AudioSource>();
     }
 
     public override void LateUpdate()
@@ -31,15 +32,16 @@ public class W_Enemy : Weapon
             if (returnWeapon) transform.localRotation = Quaternion.identity;
             return;
         }
+        _target = GetComponentInParent<Enemy>().target;
 
-        Vector3 direction = _player.position - transform.position;
+        Vector3 direction = _target.position - transform.position;
         Quaternion toRotation = Quaternion.LookRotation(direction, transform.up);
         transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, aimSpeed * Time.deltaTime);
         Vector3 eulers = transform.rotation.eulerAngles;
         transform.rotation = Quaternion.Euler(eulers.x, eulers.y, 0f);
 
         if (shootFromMuzzle) { bulletSpawnPoint.localRotation = Quaternion.identity;}
-        else { bulletSpawnPoint.LookAt(_player); }
+        else { bulletSpawnPoint.LookAt(_target); }
         ApplyInaccuracy();
     }
 }
